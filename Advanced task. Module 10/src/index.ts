@@ -125,7 +125,7 @@ svg
       const coords = { x: e.x, y: e.y };
       div.transition().duration(200).style("opacity", 0.9);
       div
-        .html(`<span>${datum.name}: ${ia(datum.name)}</span>`)
+        .html(`<span>${datum.name}: ${"Casos diagnosticatos por cada 100.000 habitantes:"+ia(datum.name)}</span>`)
         .style("left", `${coords.x}px`)
         .style("top", `${coords.y - 28}px`);
   })
