@@ -71,6 +71,11 @@ svg
   .attr("class", "country")
   .attr("d", geoPath as any);
 
+const ia = (comunidad: string) => {
+    const output = datos.find((item) => item.name === comunidad);
+    return output ? output.value : 0;
+  };
+
 svg
   .selectAll("circle")
   .data(latLongCommunities)
@@ -81,7 +86,24 @@ svg
     return calculateRadiusBasedOnAffectedCases(d.name);
   })
   .attr("cx", (d) => aProjection([d.long, d.lat])[0])
-  .attr("cy", (d) => aProjection([d.long, d.lat])[1]);
+  .attr("cy", (d) => aProjection([d.long, d.lat])[1])
+  .on("mouseover", function (e: any, datum: any) {
+    d3
+      .select(this);
+      const coords = { x: e.x, y: e.y };
+      div.transition().duration(200).style("opacity", 0.9);
+      div
+        .html(`<span>${datum.name}: ${"Casos diagnosticatos por cada 100.000 habitantes:"+ia(datum.name)}</span>`)
+        .style("left", `${coords.x}px`)
+        .style("top", `${coords.y - 28}px`);
+  })
+  .on("mouseout", function (datum) {
+    d3.select(this).attr("transform", "");
+    div.transition().duration(500).style("opacity", 0);
+  });
+  
+  
+
 
 const updateChart = (covid: resultado[]) => {
   datos = covid;
