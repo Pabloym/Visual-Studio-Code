@@ -85,8 +85,13 @@ export const latLongCommunities = [
     lat: 42.465,
   },
   {
-    name: "Ceuta y Melilla",
-    long:-4.310833,
-    lat:35.583349,
+    name: "Ceuta",
+    long: -5.344104,
+    lat: 35.898369,
+  },
+  {
+    name: "Melilla",
+    long: -2.9464,
+    lat: 35.301432,
   },
 ];
