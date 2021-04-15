@@ -5,6 +5,30 @@ const d3Composite = require("d3-composite-projections");
 import { latLongCommunities } from "./communities";
 import { ola1, ola2, ola3, covidNow, resultado } from "./covid";
 
+
+// Escala de colores segun gravedad
+const color = d3
+  .scaleThreshold<number, string>()
+  .domain([0, 50, 100, 250, 500, 1000])
+  .range([
+    "#ffffae", 
+    "#f6de7e",  
+    "#efbc51", 
+    "#eaaa45", 
+    "#de8532",  
+    "#c35931",  
+    "#a13030"
+  ]);
+
+// Asignacion de colores por comunidad 
+const assignCommunitiesBackgroundColor = (comunidad: string) => {
+  const item = datos.find(
+    (item) => item.name === comunidad
+  );
+
+  return item ? color(item.value) : color(0);
+};
+
 const maxAffected1 = ola1.reduce(
   (max, item) => (item.value > max ? item.value : max),
   0
@@ -20,7 +44,8 @@ const maxAffected3 = ola3.reduce(
 const maxAffected4 = covidNow.reduce(
   (max, item) => (item.value > max ? item.value : max),
   0
-);
+); 
+
 
 const maxAffected = Math.max(
   maxAffected1,
@@ -62,7 +87,7 @@ const div = d3
   .append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);
-
+/*
 svg
   .selectAll("path")
   .data(geojson["features"])
@@ -70,6 +95,18 @@ svg
   .append("path")
   .attr("class", "country")
   .attr("d", geoPath as any);
+*/
+// Pintar el mapa con dichos colores
+svg
+  .selectAll("path")
+  .data(geojson["features"])
+  .enter()
+  .append("path")
+  .attr("class", "country")
+  .attr("d", geoPath as any)
+  .style("fill",function(d : any) {
+    return assignCommunitiesBackgroundColor(d.properties.NAME_1)
+  });
 
 svg
   .selectAll("circle")
@@ -92,7 +129,17 @@ const updateChart = (covid: resultado[]) => {
     .duration(800)
     .attr("r", (d) => {
       return calculateRadiusBasedOnAffectedCases(d.name);
-    });
+    })
+    svg
+  .selectAll("path")
+  .data(geojson["features"])
+  .transition()
+  .duration(500)
+  .attr("class", "country")
+  .attr("d", geoPath as any)
+  .style("fill",function(d : any) {
+    return assignCommunitiesBackgroundColor(d.properties.NAME_1)
+  });
 };
 
 updateChart(ola1);
