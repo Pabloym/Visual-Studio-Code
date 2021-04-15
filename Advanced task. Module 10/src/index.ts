@@ -6,7 +6,6 @@ import { latLongCommunities } from "./communities";
 import { ola1, ola2, ola3, covidNow, resultado } from "./covid";
 
 
-// Escala de colores segun gravedad
 const color = d3
   .scaleThreshold<number, string>()
   .domain([0, 50, 100, 250, 500, 1000])
@@ -22,7 +21,6 @@ const color = d3
     
 
 
-// Asignacion de colores por comunidad 
 const assignCommunitiesBackgroundColor = (comunidad: string) => {
   const item = datos.find(
     (item) => item.name === comunidad
@@ -92,7 +90,6 @@ const div = d3
   .attr("class", "tooltip")
   .style("opacity", 0);
 
-// Pintar el mapa con dichos colores
 
 svg
   .selectAll("path")
@@ -135,7 +132,7 @@ svg
   .on("mouseout", function (datum) {
     d3.select(this).attr("transform", "");
     div.transition().duration(500).style("opacity", 0);
-  });;
+  });
   
 
 const updateChart = (covid: resultado[]) => {
