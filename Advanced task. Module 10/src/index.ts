@@ -11,14 +11,16 @@ const color = d3
   .scaleThreshold<number, string>()
   .domain([0, 50, 100, 250, 500, 1000])
   .range([
-    "#ffffae", 
-    "#f6de7e",  
-    "#efbc51", 
-    "#eaaa45", 
-    "#de8532",  
-    "#c35931",  
-    "#a13030"
-  ]);
+    "#D7FFF8",
+    "#a7f9ea",
+    "#4ad2df",
+    "#00a8d9",
+    "#007bcc",
+    "#0749ab",
+    "#0B0050",
+    ]);
+    
+
 
 // Asignacion de colores por comunidad 
 const assignCommunitiesBackgroundColor = (comunidad: string) => {
@@ -67,6 +69,8 @@ const calculateRadiusBasedOnAffectedCases = (comunidad: string) => {
   return entry ? affectedRadiusScale(entry.value) : 0;
 };
 
+
+
 const aProjection = d3Composite
   .geoConicConformalSpain()
   .scale(3300)
@@ -87,16 +91,9 @@ const div = d3
   .append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);
-/*
-svg
-  .selectAll("path")
-  .data(geojson["features"])
-  .enter()
-  .append("path")
-  .attr("class", "country")
-  .attr("d", geoPath as any);
-*/
+
 // Pintar el mapa con dichos colores
+
 svg
   .selectAll("path")
   .data(geojson["features"])
@@ -107,6 +104,12 @@ svg
   .style("fill",function(d : any) {
     return assignCommunitiesBackgroundColor(d.properties.NAME_1)
   });
+  
+
+const ia = (comunidad: string) => {
+    const output = datos.find((item) => item.name === comunidad);
+    return output ? output.value : 0;
+  };
 
 svg
   .selectAll("circle")
@@ -118,7 +121,22 @@ svg
     return calculateRadiusBasedOnAffectedCases(d.name);
   })
   .attr("cx", (d) => aProjection([d.long, d.lat])[0])
-  .attr("cy", (d) => aProjection([d.long, d.lat])[1]);
+  .attr("cy", (d) => aProjection([d.long, d.lat])[1])
+  .on("mouseover", function (e: any, datum: any) {
+    d3
+      .select(this);
+      const coords = { x: e.x, y: e.y };
+      div.transition().duration(200).style("opacity", 0.9);
+      div
+        .html(`<span>${datum.name}: ${ia(datum.name)}</span>`)
+        .style("left", `${coords.x}px`)
+        .style("top", `${coords.y - 28}px`);
+  })
+  .on("mouseout", function (datum) {
+    d3.select(this).attr("transform", "");
+    div.transition().duration(500).style("opacity", 0);
+  });;
+  
 
 const updateChart = (covid: resultado[]) => {
   datos = covid;
