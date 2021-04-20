@@ -6,7 +6,7 @@
 
 In this task, we have to replicate the advanced exercise with a different country, in my case I have chosen Germany.
 
-I have selected the file from the following url:
+I have selected the file of the map of Germany from the following url:
 https://github.com/deldersveld/topojson/blob/master/countries/germany/dach-states.json
 If we observe that, in that file, there are others countries which have borders with Germany, those are Switzerland and Austria. As we do not want that those countries appear in the graphics, I have deleted that part of the file. This file is called germany.json.
 
