@@ -11,7 +11,7 @@ https://github.com/deldersveld/topojson/blob/master/countries/spain/spain-comuni
 This file will be named as spain.json.
 
 The next step is to prepare a file which contains the name of each region as well as the longitude and latitude in order to draw each circle in each Autonomous Community.
-The name of the Autonomous Community in both files have to be the same, so we have to take care with that, because, in other case, this could result in no circles being painted on this autonomous community.
+The name of the Autonomous Community in both files have to be the same, so we have to take care with that, because, in another case, this could result in no circles being painted on this autonomous community.
 This is the case of several communities such as Madrid (Comunidad de Madrid), Murcia (Región de Murcia) , Navarra (Comunidad Foral de Navarra) or Asturias (Principado de Asturias) among others.
 This file is named communities.ts and it is the following:
 
@@ -433,7 +433,7 @@ export const covidNow: resultado[] = [
   { name: "Ceuta y Melilla", value: 200 },
 ];
 ```
-As we can see, in each data we can obtain the original data of people infected of covid-19 using the link.
+As we can see, in each data, we can obtain the original data of people infected of covid-19 using the link.
 
 
 To conclude with the files, the index.html file is the following:
@@ -456,7 +456,7 @@ To conclude with the files, the index.html file is the following:
 </html>
 
 ```
-Where we can see that in the graphics we will have four buttons, one to each waves and other to the current situation. 
+Where we can see that in the graphics we will have four buttons, one for each wave and other for the current situation. 
 
 ## Code
 
@@ -468,7 +468,7 @@ const d3Composite = require("d3-composite-projections");
 import { latLongCommunities } from "./communities";
 import { ola1, ola2, ola3, covidNow, resultado } from "./covid";
 ```
-To scale the radius of the circle we will take the maximun number of cumulative indicidence of all the data.
+To scale the radius of the circle we will take the maximum number of cumulative incidence of all the data.
 ```
 const maxAffected1 = ola1.reduce(
   (max, item) => (item.value > max ? item.value : max),
@@ -494,7 +494,7 @@ const maxAffected = Math.max(
   maxAffected4
 );
 ```
-And with the following function we will scale it in a linear way.
+And with the following function, we will scale it in a linear way.
 ```
 const affectedRadiusScale = d3
   .scaleLinear()
@@ -513,7 +513,7 @@ const calculateRadiusBasedOnAffectedCases = (comunidad: string) => {
   return entry ? affectedRadiusScale(entry.value) : 0;
 };
 ```
-In the following cell, it is how I have projected the map of Spain including the Canary Island and Ceuta and Melilla.
+In the following cell, it is how I have projected the map of Spain, including the Canary Island and Ceuta and Melilla.
 ```
 const aProjection = d3Composite
   .geoConicConformalSpain()
@@ -547,7 +547,7 @@ svg
   .attr("class", "country")
   .attr("d", geoPath as any);
 ```
-The following function is useful to be able to visualize the number of the cumulativa incidence by 100.000 people in each region, we will use it to show this number when we select each region with the mouse. 
+The following function is useful to be able to visualize the number of the cumulative incidence by 100.000 people in each region, we will use it to show this number when we select each region with the mouse. 
 It will appear a circle with the name of the corresponding region and the number cumulative incidence.
 ```
 const ia = (comunidad: string) => {
