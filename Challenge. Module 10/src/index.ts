@@ -31,26 +31,12 @@ const assignCommunitiesBackgroundColor = (comunidad: string) => {
   return item ? color(item.value) : color(0);
 };
 
-const maxAffected1 = antes.reduce(
-  (max, item) => (item.value > max ? item.value : max),
-  0
-);
-const maxAffected2 = ahora.reduce(
-  (max, item) => (item.value > max ? item.value : max),
-  0
-);
 
 
-const maxAffected =  Math.max(
-  maxAffected1,
-  maxAffected2,
-);
-
-const affectedRadiusScale = d3
-  .scaleLinear()
-  .domain([0, maxAffected])
-  .range([0, 50]);
-
+const circleScale = d3
+  .scaleThreshold<number, number>()
+  .domain([0,50,100,250,500,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000])
+  .range([5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
 
 
 const calculateRadiusBasedOnAffectedCases = (comunidad: string) => {
@@ -95,15 +81,10 @@ svg
   });
   
 
-const ia = (comunidad: string) => {
+const numberOfPeopleInfected = (comunidad: string) => {
     const output = datos.find((item) => item.name === comunidad);
     return output ? output.value : 0;
   };
-
-const circleScale = d3
-  .scaleThreshold<number, number>()
-  .domain([0,50,100,250,500,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000])
-  .range([5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]);
 
 
 svg
@@ -123,7 +104,7 @@ svg
       const coords = { x: e.x, y: e.y };
       div.transition().duration(200).style("opacity", 0.9);
       div
-        .html(`<span>${datum.name}: ${"Diagnosed cases:"+ia(datum.name)}</span>`)
+        .html(`<span>${datum.name}: ${"Diagnosed cases:"+numberOfPeopleInfected(datum.name)}</span>`)
         .style("left", `${coords.x}px`)
         .style("top", `${coords.y - 28}px`);
   })
@@ -164,4 +145,3 @@ document.getElementById("before").addEventListener("click", function () {
 document.getElementById("now").addEventListener("click", function () {
   updateChart(ahora);
 });
-
